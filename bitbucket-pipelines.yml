@@ -1,0 +1,93 @@
+image:
+  name: 313462900895.dkr.ecr.us-east-1.amazonaws.com/nanometrics/pipelines:maven-graalvm_6.1.9-jdk17
+  aws:
+    access-key: $AWS_ACCESS_KEY_ID
+    secret-key: $AWS_SECRET_ACCESS_KEY
+definitions:
+  steps:
+    - step: &linux-build
+        size: 2x
+        name: Build Linux
+        caches:
+          - maven
+        script:
+          - mvn clean verify
+        artifacts:
+          - msx/target/deploy/**
+          - "**/target/surefire-*"
+    - step: &windows-build
+        name: Build Windows
+        image: alpine
+        runs-on:
+          - windows
+          - maven
+          - graalvm
+        caches:
+          - maven
+        script:
+          - mvn -version
+          - |
+            cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
+            Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
+              if ($_ -match "^(.*?)=(.*)$") {
+                Set-Content "env:\$($matches[1])" $matches[2]
+              }
+            }
+            mvn verify
+        artifacts:
+          - msx/target/deploy/**
+          - "**/target/surefire-*"
+    - step: &macos-build
+        name: Build Mac
+        image: alpine
+        runs-on:
+          - macos
+          - maven
+          - graalvm
+        caches:
+          - maven
+        script:
+          - mvn verify
+        artifacts:
+          - msx/target/deploy/**
+          - "**/target/surefire-*"
+    - step: &upload-release-artifacts
+        name: Upload Release Artifacts
+        caches:
+          -maven
+        script:
+          - mvn nmx-release:upload
+        artifacts:
+          - msx/target/deploy/**
+          - "**/target/surefire-*"
+pipelines:
+  branches:
+    develop:
+      - parallel:
+          steps:
+            - step: *linux-build
+            - step: *windows-build
+            - step: *macos-build
+    '{feature/*,snyk-*}':
+      - parallel:
+          steps:
+            - step: *linux-build
+            - step:
+                <<: *windows-build
+                trigger: manual
+            - step:
+                <<: *macos-build
+                trigger: manual
+    main:
+      - parallel:
+          - step: *linux-build
+          - step: *windows-build
+          - step: *macos-build
+      - step: *upload-release-artifacts
+  custom:
+    release:
+      - step:
+          caches:
+            - maven
+          script:
+            - mvn jgitflow:release-start jgitflow:release-finish -DnoReleaseBuild

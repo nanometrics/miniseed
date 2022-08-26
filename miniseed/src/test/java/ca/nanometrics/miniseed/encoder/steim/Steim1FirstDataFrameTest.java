@@ -1,0 +1,271 @@
+package ca.nanometrics.miniseed.encoder.steim;
+
+/*-
+ * #%L
+ * miniseed
+ * %%
+ * Copyright (C) 2022 - 2023 Nanometrics Inc
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import ca.nanometrics.miniseed.Sample;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.OngoingStubbing;
+
+public class Steim1FirstDataFrameTest {
+  private static final String DESCRIPTION = "testfirstframe";
+
+  @Test
+  public void testAddingSampleThatDoesNotFillFrameReturnsempty() {
+    Sample sample = new Sample(1);
+
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, new Steim1WordProvider(), SteimTestHelper.ZERO_VALUE);
+    assertThat(dataFrame.addSample(sample).isPresent(), is(false));
+  }
+
+  @Test
+  public void testAddingSampleThatFillsFrameExactlyReturnsEmptyList() {
+    Sample[] differences =
+        SteimTestHelper.getSamplesWithFourByteDifferences(Steim1FirstDataFrame.NUM_DATA_WORDS + 1);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), differences[currentSample++]);
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS - 1; i++) {
+      dataFrame.addSample(differences[currentSample++]);
+    }
+    Optional<List<Sample>> overflow = dataFrame.addSample(differences[currentSample++]);
+    assertThat(overflow.isPresent(), is(true));
+    assertThat(overflow.get().isEmpty(), is(true));
+  }
+
+  @Test
+  public void testAddingSampleThatFillsAndOverflowsFrameReturnsListOfOverflowValues() {
+    int maxNumOneByteDifferences =
+        Steim1FirstDataFrame.NUM_DATA_WORDS * Steim1DataWord.STEIM_ONE_MAX_DIFFERENCE_WIDTH;
+    Sample[] samplesWithOneByteDifferences =
+        SteimTestHelper.getSamplesWithOneByteDifferences(maxNumOneByteDifferences);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), samplesWithOneByteDifferences[currentSample++]);
+
+    for (int i = 0; i < maxNumOneByteDifferences - 2; i++) {
+      dataFrame.addSample(samplesWithOneByteDifferences[currentSample++]);
+    }
+
+    // Frame is now loaded so it is full except for the last word, which has 2 1-byte differences in
+    // it
+    Sample lastOneByteSample = samplesWithOneByteDifferences[currentSample];
+    Sample sampleWithFourByteDifference =
+        SteimTestHelper.getSampleWithFourByteDifferenceFrom(lastOneByteSample);
+
+    dataFrame.addSample(lastOneByteSample);
+    Optional<List<Sample>> overflow = dataFrame.addSample(sampleWithFourByteDifference);
+
+    assertThat(overflow.isPresent(), is(true));
+    assertThat(overflow.get().size(), is(2));
+    assertThat(overflow.get().get(0), is(lastOneByteSample));
+    assertThat(overflow.get().get(1), is(sampleWithFourByteDifference));
+  }
+
+  @Test
+  public void testFrameThatDoesNotHaveEnoughWordsIsNotFull() {
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, new Steim1WordProvider(), SteimTestHelper.ZERO_VALUE);
+    assertThat(dataFrame.isFull(), is(false));
+  }
+
+  @Test
+  public void testFrameThatHasMaxNumWordsButLastWordIsNotFullIsNotFull() {
+    Sample[] samplesWithFourBytesDifference =
+        SteimTestHelper.getSamplesWithFourByteDifferences(Steim1FirstDataFrame.NUM_DATA_WORDS + 1);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), samplesWithFourBytesDifference[currentSample++]);
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS - 1; i++) {
+      dataFrame.addSample(samplesWithFourBytesDifference[currentSample++]);
+    }
+    Sample oneByteDifferenceSample =
+        SteimTestHelper.getSampleWithOneByteDifferenceFrom(
+            samplesWithFourBytesDifference[currentSample - 1]);
+
+    dataFrame.addSample(oneByteDifferenceSample);
+    assertThat(dataFrame.isFull(), is(false));
+  }
+
+  @Test
+  public void testFrameThatIsFilledWithFullWordsIsFull() {
+    Sample[] differences =
+        SteimTestHelper.getSamplesWithFourByteDifferences(Steim1FirstDataFrame.NUM_DATA_WORDS + 1);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), differences[currentSample++]);
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      dataFrame.addSample(differences[currentSample++]);
+    }
+    assertThat(dataFrame.isFull(), is(true));
+  }
+
+  @Test
+  public void testGetLastSampleOnFullFrameReturnsLastSample() {
+    Sample[] differences =
+        SteimTestHelper.getSamplesWithFourByteDifferences(Steim1FirstDataFrame.NUM_DATA_WORDS + 1);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), differences[currentSample++]);
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS - 1; i++) {
+      dataFrame.addSample(differences[currentSample++]);
+    }
+
+    Sample lastSample = differences[currentSample];
+    dataFrame.addSample(lastSample);
+    assertThat(dataFrame.isFull(), is(true));
+    assertThat(dataFrame.getLastSample().get(), is(lastSample));
+  }
+
+  @Test
+  public void testGetLastSampleOnNotFullFrameThrowsException() {
+    assertThrows(
+        IllegalStateException.class,
+        () -> {
+          Steim1FirstDataFrame dataFrame =
+              new Steim1FirstDataFrame(
+                  DESCRIPTION, new Steim1WordProvider(), SteimTestHelper.ZERO_VALUE);
+          assertThat(dataFrame.isFull(), is(false));
+          dataFrame.getLastSample();
+        });
+  }
+
+  @Test
+  public void testByteArrayIsProperlyFormed() {
+    SteimWord[] steimWords = new SteimWord[16];
+    Sample[] samplesAtTimes = new Sample[15];
+    byte[] nibbleCodes = new byte[] {1, 2, 3};
+
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      samplesAtTimes[i] = new Sample(Integer.MAX_VALUE / (i + 1));
+    }
+
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      steimWords[i] = mock(SteimWord.class);
+      when(steimWords[i].addSample(samplesAtTimes[i]))
+          .thenReturn(Optional.of(Collections.<Sample>emptyList()));
+      when(steimWords[i].getLastSample()).thenReturn(Optional.of(samplesAtTimes[i]));
+      when(steimWords[i].getFirstSample()).thenReturn(samplesAtTimes[i]);
+      when(steimWords[i].getNumSamples()).thenReturn(1);
+      when(steimWords[i].isFull()).thenReturn(true);
+      when(steimWords[i].getTwoBitNibbleCode()).thenReturn(nibbleCodes[i % 3]);
+      when(steimWords[i].toByteArray())
+          .thenReturn(ByteBuffer.allocate(4).putInt(samplesAtTimes[i].sample()).array());
+    }
+
+    Steim1WordProvider wordProvider = mock(Steim1WordProvider.class);
+    OngoingStubbing<SteimWord> when = when(wordProvider.getWord(isA(Sample.class)));
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      when = when.thenReturn(steimWords[i]);
+    }
+
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, wordProvider, SteimTestHelper.ZERO_VALUE);
+    dataFrame.setSteimBlockLastSample(samplesAtTimes[12]);
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      dataFrame.addSample(samplesAtTimes[i]);
+    }
+    byte[] byteArray = dataFrame.getAsByteArray();
+    assertThat(byteArray[0], is((byte) 0b00000001));
+    assertThat(byteArray[1], is((byte) 0b10110110));
+    assertThat(byteArray[2], is((byte) 0b11011011));
+    assertThat(byteArray[3], is((byte) 0b01101101));
+    for (int i = 0; i < Steim1FirstDataFrame.NUM_DATA_WORDS; i++) {
+      assertThat(
+          ByteBuffer.wrap(Arrays.copyOfRange(byteArray, (i + 3) * 4, (i + 4) * 4)).getInt(),
+          is(samplesAtTimes[i].sample()));
+    }
+  }
+
+  @Test
+  public void testForceCompleteWithNoOverflowReturnsOptionalempty() {
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, new Steim1WordProvider(), SteimTestHelper.ZERO_VALUE);
+    dataFrame.addSample(new Sample(0));
+    assertThat(dataFrame.forceComplete(), is(Optional.<Sample>empty()));
+  }
+
+  @Test
+  public void testForceCompleteWithOverflowReturnsOverflow() {
+    int maxNumOneByteDifferences =
+        Steim1FirstDataFrame.NUM_DATA_WORDS * Steim1DataWord.STEIM_ONE_MAX_DIFFERENCE_WIDTH;
+    Sample[] samplesWithOneByteDifferences =
+        SteimTestHelper.getSamplesWithOneByteDifferences(maxNumOneByteDifferences);
+    int currentSample = 0;
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(
+            DESCRIPTION, new Steim1WordProvider(), samplesWithOneByteDifferences[currentSample++]);
+
+    for (int i = 0; i < maxNumOneByteDifferences - 2; i++) {
+      dataFrame.addSample(samplesWithOneByteDifferences[currentSample++]);
+    }
+
+    // Frame is now loaded so it is full except for the last word, which has 2 1-byte differences in
+    // it
+    Sample lastOneByteSample = samplesWithOneByteDifferences[currentSample];
+    dataFrame.addSample(lastOneByteSample);
+    assertThat(dataFrame.forceComplete(), is(Optional.of(lastOneByteSample)));
+  }
+
+  @Test
+  public void testForceCompleteFillsFrame() {
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, new Steim1WordProvider(), SteimTestHelper.ZERO_VALUE);
+    dataFrame.addSample(new Sample(0));
+    dataFrame.forceComplete();
+    assertThat(dataFrame.isFull(), is(true));
+  }
+
+  @Test
+  public void testOverflowingWordsAreForceCompleted_CENT_998() {
+    Sample sample = new Sample(0);
+    Steim1FirstDataFrame dataFrame =
+        new Steim1FirstDataFrame(DESCRIPTION, new Steim1WordProvider(), sample);
+
+    // This loads the dataframe so that the first word has 3 one byte differences (0) in it
+    for (int i = 0; i < 3; i++) {
+      dataFrame.addSample(sample);
+    }
+
+    dataFrame.forceComplete();
+    assertThat(dataFrame.getNumSamples(), is(3));
+    assertThat(
+        dataFrame.getLastNonEmptyWord().getTwoBitNibbleCode(),
+        is(Steim1ControlCode.FOUR_BYTE_DATA.getTwoBitControlCodeValue()));
+  }
+}

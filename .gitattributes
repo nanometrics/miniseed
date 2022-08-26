@@ -1,0 +1,15 @@
+* text eol=lf
+*.bat text eol=crlf
+*.seed binary
+*.dataless binary
+*.sl binary
+*.exe binary
+*.jar binary
+*.rex binary
+*.exe binary
+*.dll binary
+*.a binary
+*.zip binary
+*.so binary
+*.dylib binary
+
