@@ -196,7 +196,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven-javadoc-plugin.version}</version>
           <configuration>
-            <additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
+            <additionalOptions>-Xdoclint:all -Xdoclint:-missing -package</additionalOptions>
           </configuration>
           <executions>
             <execution>
