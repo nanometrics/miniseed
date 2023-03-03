@@ -116,14 +116,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
         <configuration>
@@ -239,7 +231,7 @@
           <execution>
             <id>build-native</id>
             <goals>
-              <goal>build</goal>
+              <goal>compile-no-fork</goal>
             </goals>
             <phase>package</phase>
           </execution>
