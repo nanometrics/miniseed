@@ -1,5 +1,7 @@
 # miniSEED
 
+![Maven Central](https://img.shields.io/maven-central/v/ca.nanometrics/miniseed?style=plastic)
+
 A Java library and command-line tool, *msx*, for handling miniSEED data, in both
 [Version 2.4](http://www.fdsn.org/pdf/SEEDManual_V2.4.pdf)
 and [Version 3](https://miniseed3.readthedocs.io/en/latest/).

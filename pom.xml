@@ -4,7 +4,7 @@
 
   <groupId>ca.nanometrics</groupId>
   <artifactId>miniseed-parent</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -15,7 +15,6 @@
   <scm>
     <connection>scm:git:ssh://${project.scm.url}</connection>
     <developerConnection>scm:git:ssh://${project.scm.url}</developerConnection>
-    <tag>miniseed-parent-0.0.1</tag>
     <url>git@github.com:nanometrics/miniseed.git</url>
   </scm>
   <distributionManagement>
@@ -64,6 +63,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.36</slf4j.version>
     <spotless.version>2.34.0</spotless.version>
+    <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -251,6 +251,14 @@
               <version>${asciidoctorj.pdf.version}</version>
             </dependency>
           </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions-maven-plugin.version}</version>
+          <configuration>
+            <generateBackupPoms>false</generateBackupPoms>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>

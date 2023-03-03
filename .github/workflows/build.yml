@@ -28,7 +28,7 @@ jobs:
         run: |
           mvn --no-transfer-progress --batch-mode \
           -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
-          deploy -Pdeploy -pl :miniseed-parent,:miniseed
+          deploy -pl :miniseed-parent,:miniseed
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
@@ -52,6 +52,5 @@ jobs:
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
-          name: msx executable
-          path: 'msx/target/deploy/**'
-          retention-days: 10
+          name: msx-${{ matrix.os }}
+          path: 'msx/target/deploy/msx*'
