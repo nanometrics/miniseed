@@ -39,11 +39,12 @@
     <java.release>17</java.release>
     <java.version>17</java.version>
     <jdk.version>17</jdk.version>
-    <json.version>20220924</json.version>
+    <json.version>20230227</json.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>5.9.1</junit.version>
+    <junit.version>5.9.2</junit.version>
     <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-    <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+    <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
+    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
     <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -51,14 +52,14 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <mockito.version>4.8.0</mockito.version>
-    <native-maven-plugin.version>0.9.19</native-maven-plugin.version>
-    <okhttp.version>5.0.0-alpha.10</okhttp.version>
-    <picocli.version>4.7.0</picocli.version>
+    <native-maven-plugin.version>0.9.20</native-maven-plugin.version>
+    <okhttp.version>5.0.0-alpha.11</okhttp.version>
+    <picocli.version>4.7.1</picocli.version>
     <progressbar.version>0.9.5</progressbar.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.36</slf4j.version>
-    <spotless.version>2.28.0</spotless.version>
+    <spotless.version>2.34.0</spotless.version>
   </properties>
 
   <dependencyManagement>
@@ -185,6 +186,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>${maven-enforcer-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -320,8 +326,8 @@
         <configuration>
           <rules>
             <requireJavaVersion>
-              <message>Must have JDK 17 or higher</message>
-              <version>[17,)</version>
+              <message>Must have JDK ${java.version} or higher</message>
+              <version>[${java.version},)</version>
             </requireJavaVersion>
           </rules>
         </configuration>
@@ -330,6 +336,18 @@
             <goals>
               <goal>enforce</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
