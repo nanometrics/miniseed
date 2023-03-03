@@ -11,7 +11,7 @@ For details on *msx*, the command-line tools, see [msx](msx/README.md).
 
 ## Building miniSEED
 
-See [the CONTRIBUTING.md docs](CONTRIBUTING.md#Building_miniSEED).
+See [the CONTRIBUTING.md docs](CONTRIBUTING.md#building-miniseed).
 
 ## License
 
