@@ -5,8 +5,6 @@ on:
       - main
       - develop
       - 'feature/**'
-env:
-  MAVEN_OPTS: '-Dstyle.color=always -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer=warn'
 jobs:
   publish-library:
     runs-on: ubuntu-latest
@@ -43,10 +41,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: Set up GraalVM Native Image toolchain
-        #      https://github.com/marketplace/actions/github-action-for-graalvm
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.2.0'
+          version: '22.3.0'
           java-version: '17'
           components: 'native-image'
       - name: build msx
