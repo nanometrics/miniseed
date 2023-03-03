@@ -5,7 +5,7 @@
   <parent>
     <groupId>ca.nanometrics</groupId>
     <artifactId>miniseed-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>msx</artifactId>
   <description>miniseed executable tool</description>

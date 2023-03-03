@@ -1,0 +1,65 @@
+name: Release
+on:
+  push:
+    tags: '*'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java with OSSRH
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - id: version
+        name: Get version
+        run: echo "version=$(mvn --no-transfer-progress --batch-mode help:evaluate -Dexpression=project.version | grep -v INFO)" >> $GITHUB_OUTPUT
+      - id: check-not-snapshot
+        name: Fail if is a snapshot
+        run: |
+          if [[ ${{ steps.version.outputs.version }} == *-SNAPSHOT ]]; then
+            echo "Version ${{ steps.version.outputs.version }} is a snapshot"
+            exit 1
+          fi
+      - id: install-secret-key
+        name: Install gpg secret key
+        run: |
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
+      - name: Deploy to OSSRH Maven Central
+        run: |
+          mvn --no-transfer-progress --batch-mode \
+          -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+          -Prelease deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+  build-msx:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Set up GraalVM Native Image toolchain
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.1'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: build msx
+        run: mvn --no-transfer-progress --batch-mode verify
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: 'msx/target/deploy/**'
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false

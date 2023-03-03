@@ -4,7 +4,7 @@
 
   <groupId>ca.nanometrics</groupId>
   <artifactId>miniseed-parent</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -50,7 +50,6 @@
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
     <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-    <maven-release-plugin.version>3.0.0-M7</maven-release-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
     <maven.compiler.source>17</maven.compiler.source>
@@ -217,19 +216,6 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>${maven-release-plugin.version}</version>
-          <configuration>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <!-- Do not use release profile defined in Maven Super POM -->
-            <useReleaseProfile>false</useReleaseProfile>
-            <!-- but instead use the one defined in this file -->
-            <releaseProfiles>release</releaseProfiles>
-            <goals>deploy</goals>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
