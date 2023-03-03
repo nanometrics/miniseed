@@ -46,6 +46,7 @@ jobs:
           version: '22.3.0'
           java-version: '17'
           components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: build msx
         run: mvn --no-transfer-progress --batch-mode verify
       - name: 'Upload Artifact'
