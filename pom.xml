@@ -13,10 +13,10 @@
   </modules>
 
   <scm>
-    <connection>scm:git:ssh://git@github.com:nanometrics/miniseed.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:nanometrics/miniseed.git</developerConnection>
+    <connection>scm:git:ssh://${project.scm.url}</connection>
+    <developerConnection>scm:git:ssh://${project.scm.url}</developerConnection>
     <tag>HEAD</tag>
-    <url>https://bitbucket.org/nanometrics/miniseed</url>
+    <url>git@github.com:nanometrics/miniseed.git</url>
   </scm>
   <distributionManagement>
     <repository>
