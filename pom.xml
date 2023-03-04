@@ -6,6 +6,25 @@
   <artifactId>miniseed-parent</artifactId>
   <version>0.0.2</version>
   <packaging>pom</packaging>
+  <name>miniseed</name>
+  <description>miniseed library and command line utility</description>
+  <url>https://github.com/nanometrics/miniseed</url>
+
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Ben Tatham</name>
+      <email>bentatham@nanometrics.ca</email>
+      <organization>Nanometrics</organization>
+      <organizationUrl>http://www.nanometrics.ca</organizationUrl>
+    </developer>
+  </developers>
 
   <modules>
     <module>miniseed</module>
@@ -254,14 +273,6 @@
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
-          <artifactId>versions-maven-plugin</artifactId>
-          <version>${versions-maven-plugin.version}</version>
-          <configuration>
-            <generateBackupPoms>false</generateBackupPoms>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${build-helper-maven-plugin.version}</version>
         </plugin>
@@ -282,6 +293,14 @@
               <root>src/main/java</root>
               <root>src/test/java</root>
             </roots>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions-maven-plugin.version}</version>
+          <configuration>
+            <generateBackupPoms>false</generateBackupPoms>
           </configuration>
         </plugin>
         <plugin>
