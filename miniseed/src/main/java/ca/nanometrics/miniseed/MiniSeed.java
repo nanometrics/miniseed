@@ -37,7 +37,11 @@ import java.util.stream.StreamSupport;
 public class MiniSeed {
 
   public static Stream<DataRecord> stream(File file) throws IOException {
-    DataRecordIterator iterator = new DataRecordIterator(file);
+    return stream(new BufferedInputStream(new FileInputStream(file)));
+  }
+
+  public static Stream<DataRecord> stream(InputStream input) throws IOException {
+    DataRecordIterator iterator = new DataRecordIterator(input);
     return StreamSupport.stream(
             Spliterators.spliteratorUnknownSize(
                 iterator,
@@ -50,12 +54,13 @@ public class MiniSeed {
   }
 
   private static class DataRecordIterator implements Iterator<DataRecord> {
+
     private final InputStream input;
     private final DataRecordReader reader;
     private DataRecord next;
 
-    private DataRecordIterator(File file) throws IOException {
-      input = new BufferedInputStream(new FileInputStream(file));
+    private DataRecordIterator(InputStream input) throws IOException {
+      this.input = input;
       if (DataRecord3.isMiniSeed3(input)) {
         reader = DataRecord3::read;
       } else {
@@ -96,6 +101,7 @@ public class MiniSeed {
   }
 
   interface DataRecordReader {
+
     DataRecord read(InputStream input) throws IOException;
   }
 }
