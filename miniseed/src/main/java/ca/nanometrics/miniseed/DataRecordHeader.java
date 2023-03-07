@@ -34,5 +34,7 @@ public interface DataRecordHeader {
 
   SampleRate sampleRate();
 
+  int numberOfSamples();
+
   int length();
 }
