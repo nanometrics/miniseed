@@ -64,6 +64,8 @@
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.9.2</junit.version>
     <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
@@ -193,6 +195,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
           <inherited>true</inherited>
           <configuration>
             <encoding>UTF-8</encoding>
@@ -204,6 +207,11 @@
             <generatedSourcesDirectory>${generated-annotations.directory}</generatedSourcesDirectory>
             <generatedTestSourcesDirectory>${generated-test-annotations.directory}</generatedTestSourcesDirectory>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven-dependency-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
