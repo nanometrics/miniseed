@@ -6,7 +6,9 @@ Change Log
 _2023-03-06_
 
 * Handle MiniSeed processing from arbitrary `java.io.InputStream`
-* Remove guava library references from shaded auto-value
+* Add `numberOfSamples()` to `DataRecordHeader`
+* Add `samplePeriodNanos()` to `SampleRate`
+* Remove guava library references from shaded auto-value dependency
 
 ## Version 0.0.2
 

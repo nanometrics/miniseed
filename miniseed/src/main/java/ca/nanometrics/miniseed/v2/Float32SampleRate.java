@@ -23,6 +23,7 @@ package ca.nanometrics.miniseed.v2;
 import ca.nanometrics.miniseed.endian.BigEndian;
 
 public record Float32SampleRate(float value) implements V2SampleRate {
+
   @Override
   public double sampleRateDouble() {
     return value;
@@ -48,6 +49,11 @@ public record Float32SampleRate(float value) implements V2SampleRate {
   @Override
   public double samplePeriod() {
     return 1.0 / value;
+  }
+
+  @Override
+  public long samplePeriodNanos() {
+    return (long) (1_000_000_000 / value);
   }
 
   @Override

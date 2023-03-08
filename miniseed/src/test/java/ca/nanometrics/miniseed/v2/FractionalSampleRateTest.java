@@ -20,14 +20,16 @@ package ca.nanometrics.miniseed.v2;
  * #L%
  */
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ca.nanometrics.miniseed.*;
-import org.junit.jupiter.api.*;
+import ca.nanometrics.miniseed.SampleRate;
+import org.junit.jupiter.api.Test;
 
 class FractionalSampleRateTest {
+
   private static final double DELTA = 0.00001;
 
   @Test
@@ -58,6 +60,9 @@ class FractionalSampleRateTest {
     assertEquals(0.1, rate.sampleRateDouble(), DELTA);
     rate = FractionalSampleRate.get(-1, -10);
     assertEquals(0.1, rate.sampleRateDouble(), DELTA);
+
+    assertEquals(10d, rate.samplePeriod(), DELTA);
+    assertEquals(10_000_000_000L, rate.samplePeriodNanos());
   }
 
   @Test
@@ -65,15 +70,25 @@ class FractionalSampleRateTest {
     byte[] bytes = {5, -5};
     SampleRate rate = FractionalSampleRate.builder().encoding(bytes, 0).build();
     assertEquals(1, rate.sampleRateDouble());
+    assertEquals(1d, rate.samplePeriod(), DELTA);
+    assertEquals(1_000_000_000L, rate.samplePeriodNanos());
+
     bytes[1] = 5;
     rate = FractionalSampleRate.builder().encoding(bytes, 0).build();
     assertEquals(25, rate.sampleRateDouble());
+
+    assertEquals(0.04, rate.samplePeriod(), DELTA);
+    assertEquals(40_000_000L, rate.samplePeriodNanos());
+
     bytes[0] = -5;
     rate = FractionalSampleRate.builder().encoding(bytes, 0).build();
     assertEquals(1, rate.sampleRateDouble());
     bytes[1] = -5;
     rate = FractionalSampleRate.builder().encoding(bytes, 0).build();
     assertEquals(0.04, rate.sampleRateDouble(), DELTA);
+
+    assertEquals(25d, rate.samplePeriod(), DELTA);
+    assertEquals(25_000_000_000L, rate.samplePeriodNanos());
   }
 
   @Test
@@ -81,22 +96,32 @@ class FractionalSampleRateTest {
     V2SampleRate rate = FractionalSampleRate.get(32760, -819);
     rate = FractionalSampleRate.builder().encoding(rate.encoding()).build();
     assertEquals(40, rate.sampleRateInt());
+    assertEquals(0.025, rate.samplePeriod(), DELTA);
+    assertEquals(25_000_000L, rate.samplePeriodNanos());
 
     rate = FractionalSampleRate.get(500, -5);
     rate = FractionalSampleRate.builder().encoding(rate.encoding()).build();
     assertEquals(100, rate.sampleRateInt());
+    assertEquals(0.01, rate.samplePeriod(), DELTA);
+    assertEquals(10_000_000L, rate.samplePeriodNanos());
 
     rate = FractionalSampleRate.get(250, -5);
     rate = FractionalSampleRate.builder().encoding(rate.encoding()).build();
     assertEquals(50, rate.sampleRateInt());
+    assertEquals(0.02, rate.samplePeriod(), DELTA);
+    assertEquals(20_000_000L, rate.samplePeriodNanos());
 
     rate = FractionalSampleRate.get(250, -500);
     rate = Float32SampleRate.get(rate.encoding());
     assertEquals(0.5, rate.sampleRateDouble(), DELTA);
+    assertEquals(2d, rate.samplePeriod(), DELTA);
+    assertEquals(2_000_000_000L, rate.samplePeriodNanos());
 
     rate = FractionalSampleRate.get(32000, -819);
     rate = Float32SampleRate.get(rate.encoding());
     assertEquals(39.072040, rate.sampleRateDouble(), DELTA);
+    assertEquals(0.0255937, rate.samplePeriod(), DELTA);
+    assertEquals(25_593_750L, rate.samplePeriodNanos());
   }
 
   @Test

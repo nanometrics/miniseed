@@ -63,6 +63,14 @@ public record FractionalSampleRate(
   }
 
   @Override
+  public long samplePeriodNanos() {
+    if (isFloatingPoint()) {
+      return (long) (1_000_000_000.0 / doubleValue);
+    }
+    return 1_000_000_000 / intValue;
+  }
+
+  @Override
   public boolean isFloatingPoint() {
     return Math.abs(doubleValue - Double.MIN_VALUE) > 0.0000001;
   }
@@ -102,6 +110,7 @@ public record FractionalSampleRate(
 
   @AutoBuilder
   public abstract static class Builder {
+
     public abstract Builder factor(int factor);
 
     abstract int factor();

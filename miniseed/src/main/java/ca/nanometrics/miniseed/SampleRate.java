@@ -26,4 +26,6 @@ public interface SampleRate {
   int sampleRateInt();
 
   double samplePeriod();
+
+  long samplePeriodNanos();
 }

@@ -434,5 +434,10 @@ public record DataRecord3Header(
     public double samplePeriod() {
       return value < 0 ? -value : (1 / value);
     }
+
+    @Override
+    public long samplePeriodNanos() {
+      return (long) (samplePeriod() * 1_000_000_000L);
+    }
   }
 }
