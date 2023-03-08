@@ -20,13 +20,20 @@ See [the CONTRIBUTING.md docs](CONTRIBUTING.md#building-miniseed).
 
 To create a release of this project (library and msx), do the following:
 
+(Note: Only project maintainers can perform the release.)
+
 * On a local clone:
     * Remove snapshot from the version, setting the desired release version:
         * `mvn versions:set -DnewVersion=1.0.0`
     * Ensure CHANGELOG.md is updated with details of the new version
     * Commit the changes
     * Create a git tag with the version as the tag name
-    * `git push origin main`
+      * `git tag 1.0.0`
+      * `git push --tags`
+      * `git push origin main`
+    * Bump the version to the next snapshot version, and push.
+      * `mvn versions:set -DnewVersion=1.0.1-SNAPSHOT`
+      * `git push`
 * When you push the tag, the release.yml workflow will automatically run in GitHub Actions:
   * The workflow will:
       * Build the library and msx
