@@ -3,14 +3,19 @@ on:
   push:
     branches:
       - main
-      - develop
       - 'feature/**'
 jobs:
   publish-library:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v3
         with:
@@ -28,7 +33,7 @@ jobs:
         run: |
           mvn --no-transfer-progress --batch-mode \
           -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
-          deploy -Pdeploy -pl :miniseed-parent,:miniseed
+          deploy -pl :miniseed-parent,:miniseed
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
@@ -38,8 +43,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Set up GraalVM Native Image toolchain
         uses: graalvm/setup-graalvm@v1
         with:
@@ -52,6 +63,5 @@ jobs:
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
-          name: msx executable
-          path: 'msx/target/deploy/**'
-          retention-days: 10
+          name: msx-${{ runner.os }}
+          path: 'msx/target/deploy/msx*'

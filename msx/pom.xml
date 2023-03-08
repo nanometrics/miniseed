@@ -5,7 +5,7 @@
   <parent>
     <groupId>ca.nanometrics</groupId>
     <artifactId>miniseed-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3-SNAPSHOT</version>
   </parent>
   <artifactId>msx</artifactId>
   <description>miniseed executable tool</description>
@@ -21,15 +21,6 @@
       <groupId>ca.nanometrics</groupId>
       <artifactId>miniseed</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.auto.value</groupId>
-      <artifactId>auto-value</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.google.auto.value</groupId>
-      <artifactId>auto-value-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>info.picocli</groupId>
@@ -50,6 +41,10 @@
     <dependency>
       <groupId>org.asciidoctor</groupId>
       <artifactId>asciidoctorj-pdf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -225,7 +220,7 @@
           </buildArgs>
           <imageName>${product.name}</imageName>
           <mainClass>ca.nanometrics.miniseed.msx.Msx</mainClass>
-          <outputDirectory>${project.build.directory}/deploy/${platform.name}</outputDirectory>
+          <outputDirectory>${project.build.directory}/deploy</outputDirectory>
         </configuration>
         <executions>
           <execution>

@@ -52,7 +52,7 @@ public record DataRecord3Header(
     byte second,
     DataEncoding dataPayloadEncoding,
     DataRecord3Header.Float64SampleRate sampleRate,
-    long numberOfSamples,
+    int numberOfSamples,
     long crc,
     short dataPublicationVersion,
     long lengthOfDataPayload,
@@ -180,7 +180,7 @@ public record DataRecord3Header(
       second(bytes[14]);
       dataPayloadEncoding(DataEncoding.fromCode(bytes[15]));
       sampleRate(new Float64SampleRate(reader.readDouble(bytes, 16)));
-      numberOfSamples(reader.readUInt(bytes, 24));
+      numberOfSamples((int) reader.readUInt(bytes, 24));
       crc(reader.readUInt(bytes, 28));
       dataPublicationVersion(bytes[32]);
       short lengthOfIdentifier = reader.readUByte(bytes, 33);
@@ -257,9 +257,9 @@ public record DataRecord3Header(
 
     abstract Float64SampleRate sampleRate();
 
-    public abstract Builder numberOfSamples(long numberOfSamples);
+    public abstract Builder numberOfSamples(int numberOfSamples);
 
-    abstract long numberOfSamples();
+    abstract int numberOfSamples();
 
     public abstract Builder crc(long crc);
 
@@ -346,6 +346,7 @@ public record DataRecord3Header(
       boolean bit5,
       boolean bit6,
       boolean bit7) {
+
     public byte toByte() {
       byte flags = 0;
       if (calibrationSignalPresent) {
@@ -389,6 +390,7 @@ public record DataRecord3Header(
 
     @AutoBuilder(ofClass = Flags.class)
     public abstract static class Builder {
+
       public Flags fromByte(byte flags) {
         calibrationSignalPresent((flags & 0x01) != 0);
         timeTagIsQuestionable((flags & 0x02) != 0);
@@ -417,6 +419,7 @@ public record DataRecord3Header(
   }
 
   public record Float64SampleRate(Double value) implements SampleRate {
+
     @Override
     public double sampleRateDouble() {
       return value < 0 ? -(1 / value) : value;
@@ -430,6 +433,11 @@ public record DataRecord3Header(
     @Override
     public double samplePeriod() {
       return value < 0 ? -value : (1 / value);
+    }
+
+    @Override
+    public long samplePeriodNanos() {
+      return (long) (samplePeriod() * 1_000_000_000L);
     }
   }
 }

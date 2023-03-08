@@ -61,7 +61,7 @@ class DataRecord3HeaderTest {
     assertThat(header.recordStartTime(), is(now));
     assertThat(header.dataPayloadEncoding(), is(DataEncoding.STEIM2));
     assertThat(header.sampleRate().sampleRateDouble(), is(100d));
-    assertThat(header.numberOfSamples(), is(1000L));
+    assertThat(header.numberOfSamples(), is(1000));
     assertThat(header.crc(), is(0L));
   }
 

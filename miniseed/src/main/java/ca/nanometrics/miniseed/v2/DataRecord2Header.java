@@ -20,7 +20,6 @@ package ca.nanometrics.miniseed.v2;
  * #L%
  */
 
-import autovalue.shaded.com.google.common.base.Strings;
 import ca.nanometrics.miniseed.DataRecordHeader;
 import ca.nanometrics.miniseed.endian.BigEndian;
 import ca.nanometrics.miniseed.endian.Endian;
@@ -212,6 +211,7 @@ public record DataRecord2Header(
       boolean telemetrySynchronizationError,
       boolean digitizerFilterMayBeCharging,
       boolean timeTagIsQuestionable) {
+
     public static DataQualityFlags fromByte(byte b) {
       return new DataQualityFlags(
           (b & 0x01) == 0x01,
@@ -434,7 +434,7 @@ public record DataRecord2Header(
 
     private byte[] buildByteArray(Endian writer) {
       byte[] result = new byte[offsetToBeginningOfData()];
-      writer.writeString(result, 0, Strings.padStart(Integer.toString(sequenceNumber()), 6, '0'));
+      writer.writeString(result, 0, padStart(Integer.toString(sequenceNumber()), 6, '0'));
       result[6] = (byte) qualityIndicator().code();
       result[7] = ' '; // reserved byte
       if (sourceIdentifier() == null) {
@@ -465,9 +465,15 @@ public record DataRecord2Header(
     }
 
     private static String pad(String string, int length) {
-      return string == null
-          ? Strings.padEnd(" ", length, ' ')
-          : Strings.padEnd(string, length, ' ');
+      return string == null ? padEnd(" ", length, ' ') : padEnd(string, length, ' ');
+    }
+
+    private static String padStart(String string, int length, char c) {
+      return String.format("%1$" + length + "s", string).replace(' ', c);
+    }
+
+    private static String padEnd(String string, int length, char c) {
+      return String.format("%1$-" + length + "s", string).replace(' ', c);
     }
 
     /**
