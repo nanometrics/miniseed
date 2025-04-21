@@ -70,7 +70,7 @@
             <path>
               <groupId>com.google.auto.value</groupId>
               <artifactId>auto-value</artifactId>
-              <version>${auto-value.version}</version>
+              <version>${version.auto-value}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>

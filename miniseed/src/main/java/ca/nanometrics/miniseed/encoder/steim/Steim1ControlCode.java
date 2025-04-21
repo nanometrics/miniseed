@@ -48,8 +48,9 @@ public enum Steim1ControlCode {
       case 1 -> ONE_BYTE_DATA;
       case 2 -> TWO_BYTE_DATA;
       case 4 -> FOUR_BYTE_DATA;
-      default -> throw new IllegalArgumentException(
-          "Unexpected number of required bytes: " + numRequiredBytes);
+      default ->
+          throw new IllegalArgumentException(
+              "Unexpected number of required bytes: " + numRequiredBytes);
     };
   }
 }

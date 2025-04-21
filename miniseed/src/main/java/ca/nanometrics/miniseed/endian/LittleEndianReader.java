@@ -24,6 +24,7 @@ package ca.nanometrics.miniseed.endian;
 public class LittleEndianReader implements EndianReader {
   /** The array from which to read. */
   private final byte[] m_buffer;
+
   /** The current read offset in the byte array. */
   private int m_offset;
 

@@ -169,7 +169,7 @@
           <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli-codegen</artifactId>
-            <version>${picocli.version}</version>
+            <version>${version.picocli}</version>
           </dependency>
         </dependencies>
         <executions>

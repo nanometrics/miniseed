@@ -23,6 +23,7 @@ package ca.nanometrics.miniseed.endian;
 public class BigEndianReader implements EndianReader {
   /** The array from which to read. */
   private final byte[] m_buffer;
+
   /** The current read offset in the byte array. */
   private int m_offset;
 

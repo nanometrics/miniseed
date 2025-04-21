@@ -22,7 +22,7 @@
       <name>Ben Tatham</name>
       <email>bentatham@nanometrics.ca</email>
       <organization>Nanometrics</organization>
-      <organizationUrl>http://www.nanometrics.ca</organizationUrl>
+      <organizationUrl>https://www.nanometrics.ca</organizationUrl>
     </developer>
   </developers>
 
@@ -48,43 +48,44 @@
   </distributionManagement>
 
   <properties>
-    <asciidoctor-maven-plugin.version>2.2.2</asciidoctor-maven-plugin.version>
-    <asciidoctorj.pdf.version>2.3.4</asciidoctorj.pdf.version>
-    <asciidoctorj.version>2.5.7</asciidoctorj.version>
-    <auto-value.version>1.10.1</auto-value.version>
-    <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
-    <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
     <generated-annotations.directory>${project.build.directory}/generated-sources/annotations</generated-annotations.directory>
     <generated-test-annotations.directory>${project.build.directory}/generated-test-sources/annotations</generated-test-annotations.directory>
-    <hamcrest.version>2.2</hamcrest.version>
     <java.release>17</java.release>
-    <java.version>17</java.version>
-    <jdk.version>17</jdk.version>
-    <json.version>20230227</json.version>
-    <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>5.9.2</junit.version>
-    <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-    <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
-    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-    <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <mockito.version>4.8.0</mockito.version>
-    <native-maven-plugin.version>0.9.20</native-maven-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <okhttp.version>4.9.3</okhttp.version>
-    <picocli.version>4.7.1</picocli.version>
-    <progressbar.version>0.9.5</progressbar.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <slf4j.version>1.7.36</slf4j.version>
-    <spotless.version>2.34.0</spotless.version>
-    <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
+    <version.asciidoctor-maven-plugin>3.2.0</version.asciidoctor-maven-plugin>
+    <version.asciidoctorj>3.0.0</version.asciidoctorj>
+    <version.asciidoctorj.pdf>2.3.19</version.asciidoctorj.pdf>
+    <version.auto-value>1.11.0</version.auto-value>
+    <version.build-helper-maven-plugin>3.6.0</version.build-helper-maven-plugin>
+    <version.exec-maven-plugin>3.5.0</version.exec-maven-plugin>
+    <version.google-java-format>1.26.0</version.google-java-format>
+    <version.hamcrest>3.0</version.hamcrest>
+    <version.java>17</version.java>
+    <version.jdk>17</version.jdk>
+    <version.json>20250107</version.json>
+    <version.jsr305>3.0.2</version.jsr305>
+    <version.junit>5.12.2</version.junit>
+    <version.license-maven-plugin>2.5.0</version.license-maven-plugin>
+    <version.maven-compiler-plugin>3.14.0</version.maven-compiler-plugin>
+    <version.maven-dependency-plugin>3.8.1</version.maven-dependency-plugin>
+    <version.maven-enforcer-plugin>3.5.0</version.maven-enforcer-plugin>
+    <version.maven-gpg-plugin>3.2.7</version.maven-gpg-plugin>
+    <version.maven-jar-plugin>3.4.2</version.maven-jar-plugin>
+    <version.maven-javadoc-plugin>3.11.2</version.maven-javadoc-plugin>
+    <version.maven-source-plugin>3.3.1</version.maven-source-plugin>
+    <version.maven-surefire-plugin>3.5.3</version.maven-surefire-plugin>
+    <version.mockito>5.17.0</version.mockito>
+    <version.native-maven-plugin>0.10.6</version.native-maven-plugin>
+    <version.nexus-staging-maven-plugin>1.7.0</version.nexus-staging-maven-plugin>
+    <version.okhttp>4.12.0</version.okhttp>
+    <version.picocli>4.7.7</version.picocli>
+    <version.progressbar>0.10.1</version.progressbar>
+    <version.slf4j>2.0.17</version.slf4j>
+    <version.spotless>2.44.4</version.spotless>
+    <version.versions-maven-plugin>2.18.0</version.versions-maven-plugin>
   </properties>
 
   <dependencyManagement>
@@ -92,98 +93,103 @@
       <dependency>
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value</artifactId>
-        <version>${auto-value.version}</version>
+        <version>${version.auto-value}</version>
         <optional>true</optional>
       </dependency>
       <dependency>
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value-annotations</artifactId>
-        <version>${auto-value.version}</version>
+        <version>${version.auto-value}</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
-        <version>${jsr305.version}</version>
+        <version>${version.jsr305}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.googlejavaformat</groupId>
+        <artifactId>google-java-format</artifactId>
+        <version>${version.google-java-format}</version>
       </dependency>
       <dependency>
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>
-        <version>${picocli.version}</version>
+        <version>${version.picocli}</version>
       </dependency>
       <dependency>
         <groupId>info.picocli</groupId>
         <artifactId>picocli-codegen</artifactId>
-        <version>${picocli.version}</version>
+        <version>${version.picocli}</version>
       </dependency>
       <dependency>
         <groupId>me.tongfei</groupId>
         <artifactId>progressbar</artifactId>
-        <version>${progressbar.version}</version>
+        <version>${version.progressbar}</version>
       </dependency>
       <dependency>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctorj</artifactId>
-        <version>${asciidoctorj.version}</version>
+        <version>${version.asciidoctorj}</version>
       </dependency>
       <dependency>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctorj-pdf</artifactId>
-        <version>${asciidoctorj.pdf.version}</version>
+        <version>${version.asciidoctorj.pdf}</version>
       </dependency>
       <dependency>
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
-        <version>${json.version}</version>
+        <version>${version.json}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jul-to-slf4j</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${version.slf4j}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${version.slf4j}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-jdk14</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${version.slf4j}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>
         <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
+        <version>${version.okhttp}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest</artifactId>
-        <version>${hamcrest.version}</version>
+        <version>${version.hamcrest}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>${junit.version}</version>
+        <version>${version.junit}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>${junit.version}</version>
+        <version>${version.junit}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>${junit.version}</version>
+        <version>${version.junit}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
+        <version>${version.mockito}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -195,13 +201,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
+          <version>${version.maven-compiler-plugin}</version>
           <inherited>true</inherited>
           <configuration>
             <encoding>UTF-8</encoding>
             <release>${java.release}</release>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
+            <source>${version.java}</source>
+            <target>${version.java}</target>
             <debug>true</debug>
             <verbose>false</verbose>
             <generatedSourcesDirectory>${generated-annotations.directory}</generatedSourcesDirectory>
@@ -211,27 +217,27 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven-dependency-plugin.version}</version>
+          <version>${version.maven-dependency-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${maven-enforcer-plugin.version}</version>
+          <version>${version.maven-enforcer-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>${maven-gpg-plugin.version}</version>
+          <version>${version.maven-gpg-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven-jar-plugin.version}</version>
+          <version>${version.maven-jar-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
+          <version>${version.maven-javadoc-plugin}</version>
           <configuration>
             <additionalOptions>-Xdoclint:all -Xdoclint:-missing -package</additionalOptions>
           </configuration>
@@ -247,7 +253,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>${maven-source-plugin.version}</version>
+          <version>${version.maven-source-plugin}</version>
           <executions>
             <execution>
               <goals>
@@ -260,39 +266,39 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
+          <version>${version.maven-surefire-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
           <artifactId>asciidoctor-maven-plugin</artifactId>
-          <version>${asciidoctor-maven-plugin.version}</version>
+          <version>${version.asciidoctor-maven-plugin}</version>
           <dependencies>
             <dependency>
               <groupId>org.asciidoctor</groupId>
               <artifactId>asciidoctorj</artifactId>
-              <version>${asciidoctorj.version}</version>
+              <version>${version.asciidoctorj}</version>
             </dependency>
             <dependency>
               <groupId>org.asciidoctor</groupId>
               <artifactId>asciidoctorj-pdf</artifactId>
-              <version>${asciidoctorj.pdf.version}</version>
+              <version>${version.asciidoctorj.pdf}</version>
             </dependency>
           </dependencies>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>${build-helper-maven-plugin.version}</version>
+          <version>${version.build-helper-maven-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>${exec-maven-plugin.version}</version>
+          <version>${version.exec-maven-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>${license-maven-plugin.version}</version>
+          <version>${version.license-maven-plugin}</version>
           <configuration>
             <inceptionYear>2022</inceptionYear>
             <licenseName>apache_v2</licenseName>
@@ -306,7 +312,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
-          <version>${versions-maven-plugin.version}</version>
+          <version>${version.versions-maven-plugin}</version>
           <configuration>
             <generateBackupPoms>false</generateBackupPoms>
           </configuration>
@@ -314,12 +320,12 @@
         <plugin>
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>native-maven-plugin</artifactId>
-          <version>${native-maven-plugin.version}</version>
+          <version>${version.native-maven-plugin}</version>
         </plugin>
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${nexus-staging-maven-plugin.version}</version>
+          <version>${version.nexus-staging-maven-plugin}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -327,11 +333,11 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>${spotless.version}</version>
+        <version>${version.spotless}</version>
         <configuration>
           <java>
             <googleJavaFormat>
-              <version>1.15.0</version>
+              <version>${version.google-java-format}</version>
               <style>GOOGLE</style>
               <reflowLongStrings>true</reflowLongStrings>
             </googleJavaFormat>
@@ -370,8 +376,8 @@
         <configuration>
           <rules>
             <requireJavaVersion>
-              <message>Must have JDK ${java.version} or higher</message>
-              <version>[${java.version},)</version>
+              <message>Must have JDK ${version.java} or higher</message>
+              <version>[${version.java},)</version>
             </requireJavaVersion>
           </rules>
         </configuration>

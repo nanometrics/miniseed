@@ -105,21 +105,28 @@ public enum DataEncoding {
 
   static DecoderFactory factory(DataEncoding encoding) {
     return switch (encoding) {
-      case TEXT -> (endianFactory, bytes, numSamples, length) ->
-          new DecodeText(endianFactory.apply(encoding, bytes), numSamples, length);
-      case INTEGER_16BIT -> (endianFactory, bytes, numSamples, length) ->
-          new Decode16BitIntegers(new LittleEndianReader(bytes), numSamples, length);
+      case TEXT ->
+          (endianFactory, bytes, numSamples, length) ->
+              new DecodeText(endianFactory.apply(encoding, bytes), numSamples, length);
+      case INTEGER_16BIT ->
+          (endianFactory, bytes, numSamples, length) ->
+              new Decode16BitIntegers(new LittleEndianReader(bytes), numSamples, length);
       case INTEGER_24BIT -> unsupported(encoding);
-      case INTEGER_32BIT -> (endianFactory, bytes, numSamples, length) ->
-          new Decode32BitIntegers(new LittleEndianReader(bytes), numSamples, length);
-      case FLOAT_32BIT -> (endianFactory, bytes, numSamples, length) ->
-          new Decode32BitFloats(new LittleEndianReader(bytes), numSamples, length);
-      case FLOAT_64BIT -> (endianFactory, bytes, numSamples, length) ->
-          new Decode64BitDoubles(new LittleEndianReader(bytes), numSamples, length);
-      case STEIM1 -> (endianFactory, bytes, numSamples, length) ->
-          new DecodeSteim1(endianFactory.apply(encoding, bytes), numSamples, length);
-      case STEIM2 -> (endianFactory, bytes, numSamples, length) ->
-          new DecodeSteim2(endianFactory.apply(encoding, bytes), numSamples, length);
+      case INTEGER_32BIT ->
+          (endianFactory, bytes, numSamples, length) ->
+              new Decode32BitIntegers(new LittleEndianReader(bytes), numSamples, length);
+      case FLOAT_32BIT ->
+          (endianFactory, bytes, numSamples, length) ->
+              new Decode32BitFloats(new LittleEndianReader(bytes), numSamples, length);
+      case FLOAT_64BIT ->
+          (endianFactory, bytes, numSamples, length) ->
+              new Decode64BitDoubles(new LittleEndianReader(bytes), numSamples, length);
+      case STEIM1 ->
+          (endianFactory, bytes, numSamples, length) ->
+              new DecodeSteim1(endianFactory.apply(encoding, bytes), numSamples, length);
+      case STEIM2 ->
+          (endianFactory, bytes, numSamples, length) ->
+              new DecodeSteim2(endianFactory.apply(encoding, bytes), numSamples, length);
       case GEOSCOPE_MULTIPLEXED_24BIT_INTEGER -> unsupported(encoding);
       case GEOSCOPE_MULTIPLEXED_16BIT_GAIN_RANGED_3BITEXPONENT -> unsupported(encoding);
       case GEOSCOPE_MULTIPLEXED_16BIT_GAIN_RANGED_4BITEXPONENT -> unsupported(encoding);

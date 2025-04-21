@@ -93,8 +93,8 @@ public abstract class DecodeSteim extends Decode {
         case TYPE_TWO_DIFFERENCES -> readTypeTwoDifferences(builder);
         case TYPE_THREE_DIFFERENCES -> readTypeThreeDifferences(builder);
         case NO_DIFFERENCES -> getReader().readInt();
-        default -> throw new IllegalStateException(
-            "Unexpected decompression flag: " + decompressionFlag);
+        default ->
+            throw new IllegalStateException("Unexpected decompression flag: " + decompressionFlag);
       }
     }
   }

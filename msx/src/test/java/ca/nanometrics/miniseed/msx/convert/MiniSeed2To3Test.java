@@ -106,8 +106,9 @@ class MiniSeed2To3Test {
                   assertThat(samples.isInt(), is(false));
                   assertThat(samples.doubleSamples(), is(inputRecord.samples().doubleSamples()));
                 }
-                default -> throw new IllegalArgumentException(
-                    "Unexpected value: " + referenceData.samplesType());
+                default ->
+                    throw new IllegalArgumentException(
+                        "Unexpected value: " + referenceData.samplesType());
               }
             });
   }
