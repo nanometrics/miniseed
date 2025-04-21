@@ -19,7 +19,7 @@ jobs:
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           server-id: ossrh
           server-username: MAVEN_USERNAME
@@ -54,8 +54,8 @@ jobs:
       - name: Set up GraalVM Native Image toolchain
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.3.3'
-          java-version: '17'
+          version: '23.0.2'
+          java-version: '21'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: build msx

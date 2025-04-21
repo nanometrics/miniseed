@@ -50,9 +50,11 @@
   <properties>
     <generated-annotations.directory>${project.build.directory}/generated-sources/annotations</generated-annotations.directory>
     <generated-test-annotations.directory>${project.build.directory}/generated-test-sources/annotations</generated-test-annotations.directory>
-    <java.release>17</java.release>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <java.release>21</java.release>
+    <java.version>21</java.version>
+    <jdk.version>21</jdk.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <version.asciidoctor-maven-plugin>3.2.0</version.asciidoctor-maven-plugin>
@@ -63,8 +65,6 @@
     <version.exec-maven-plugin>3.5.0</version.exec-maven-plugin>
     <version.google-java-format>1.26.0</version.google-java-format>
     <version.hamcrest>3.0</version.hamcrest>
-    <version.java>17</version.java>
-    <version.jdk>17</version.jdk>
     <version.json>20250107</version.json>
     <version.jsr305>3.0.2</version.jsr305>
     <version.junit>5.12.2</version.junit>
@@ -206,8 +206,8 @@
           <configuration>
             <encoding>UTF-8</encoding>
             <release>${java.release}</release>
-            <source>${version.java}</source>
-            <target>${version.java}</target>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
             <debug>true</debug>
             <verbose>false</verbose>
             <generatedSourcesDirectory>${generated-annotations.directory}</generatedSourcesDirectory>
@@ -376,8 +376,8 @@
         <configuration>
           <rules>
             <requireJavaVersion>
-              <message>Must have JDK ${version.java} or higher</message>
-              <version>[${version.java},)</version>
+              <message>Must have JDK ${java.version} or higher</message>
+              <version>[${java.version},)</version>
             </requireJavaVersion>
           </rules>
         </configuration>
