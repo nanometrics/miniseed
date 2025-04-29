@@ -17,7 +17,7 @@ jobs:
       - name: Set up Java with OSSRH
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
           server-id: ossrh
           server-username: MAVEN_USERNAME
@@ -63,7 +63,7 @@ jobs:
       - name: Set up GraalVM Native Image toolchain
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'graalvm-community'
           components: 'native-image'
           native-image-musl: 'true'

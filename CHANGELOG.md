@@ -5,7 +5,6 @@ Change Log
 
 _2025-04-21_
 
-* Update to Java 21
 * Update dependency libraries
 
 ## Version 0.0.3

@@ -11,7 +11,7 @@
   <description>miniseed executable tool</description>
 
   <properties>
-    <native.platformargs>--static --libc=musl</native.platformargs>
+    <native.platformargs>--static</native.platformargs>
     <picocli-docs>${project.build.directory}/deploy/docs</picocli-docs>
     <product.name>msx</product.name>
   </properties>
@@ -141,9 +141,9 @@
               <attributes>
                 <source-highlighter>coderay</source-highlighter>
                 <icons>font</icons>
-                <pagenums />
-                <toc />
-                <idprefix />
+                <pagenums></pagenums>
+                <toc></toc>
+                <idprefix></idprefix>
                 <idseparator>-</idseparator>
               </attributes>
               <backend>pdf</backend>
@@ -211,12 +211,12 @@
         <extensions>true</extensions>
         <configuration>
           <buildArgs>
-            <commandLineArgs>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder
+            <commandlineArgs>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder
               -H:IncludeResources=logging.properties
               -H:IncludeResources=META-INF/MANIFEST.MF
               -H:ReflectionConfigurationFiles=${project.build.directory}/picocli-reflect.json
               -H:+ReportUnsupportedElementsAtRuntime
-              -H:+AddAllCharsets ${native.platformargs}</commandLineArgs>
+              -H:+AddAllCharsets ${native.platformargs}</commandlineArgs>
           </buildArgs>
           <imageName>${product.name}</imageName>
           <mainClass>ca.nanometrics.miniseed.msx.Msx</mainClass>
@@ -243,7 +243,7 @@
         </os>
       </activation>
       <properties>
-        <native.platformargs />
+        <native.platformargs></native.platformargs>
         <platform.name>mac</platform.name>
       </properties>
     </profile>
@@ -267,7 +267,7 @@
         </os>
       </activation>
       <properties>
-        <native.platformargs>--static --libc=musl</native.platformargs>
+        <native.platformargs>--static</native.platformargs>
         <platform.name>linux</platform.name>
       </properties>
     </profile>
