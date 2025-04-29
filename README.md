@@ -39,13 +39,13 @@ To create a release of this project (library and msx), do the following:
       * Build the library and msx
       * Publish the library to Maven Central
       * Publish the msx to GitHub Releases
-```
+
 
 ## License
 
 ```
 
-    Copyright 2022-2023 Nanometrics
+    Copyright 2022-2025 Nanometrics
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

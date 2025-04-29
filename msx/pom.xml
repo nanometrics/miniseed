@@ -5,13 +5,13 @@
   <parent>
     <groupId>ca.nanometrics</groupId>
     <artifactId>miniseed-parent</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>msx</artifactId>
   <description>miniseed executable tool</description>
 
   <properties>
-    <native.platformargs>--static</native.platformargs>
+    <native.platformargs>--static --libc=musl</native.platformargs>
     <picocli-docs>${project.build.directory}/deploy/docs</picocli-docs>
     <product.name>msx</product.name>
   </properties>
@@ -211,12 +211,13 @@
         <extensions>true</extensions>
         <configuration>
           <buildArgs>
-            <commandlineArgs>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder
-              -H:IncludeResources=logging.properties
-              -H:IncludeResources=META-INF/MANIFEST.MF
-              -H:ReflectionConfigurationFiles=${project.build.directory}/picocli-reflect.json
-              -H:+ReportUnsupportedElementsAtRuntime
-              -H:+AddAllCharsets ${native.platformargs}</commandlineArgs>
+            <buildArg>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder</buildArg>
+            <buildArg>-H:IncludeResources=logging.properties</buildArg>
+            <buildArg>-H:IncludeResources=META-INF/MANIFEST.MF</buildArg>
+            <buildArg>-H:ReflectionConfigurationFiles=${project.build.directory}/picocli-reflect.json</buildArg>
+            <buildArg>-H:+ReportUnsupportedElementsAtRuntime</buildArg>
+            <buildArg>-H:+AddAllCharsets</buildArg>
+            <buildArg>${native.platformargs}</buildArg>
           </buildArgs>
           <imageName>${product.name}</imageName>
           <mainClass>ca.nanometrics.miniseed.msx.Msx</mainClass>
@@ -255,6 +256,7 @@
         </os>
       </activation>
       <properties>
+        <native.platformargs>--static</native.platformargs>
         <platform.name>windows</platform.name>
       </properties>
     </profile>

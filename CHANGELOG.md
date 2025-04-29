@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.0.0
+
+_2025-04-21_
+
+* Update to Java 21
+* Update dependency libraries
+
 ## Version 0.0.3
 
 _2023-03-06_
