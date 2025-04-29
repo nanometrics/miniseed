@@ -211,13 +211,12 @@
         <extensions>true</extensions>
         <configuration>
           <buildArgs>
-            <buildArg>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder</buildArg>
-            <buildArg>-H:IncludeResources=logging.properties</buildArg>
-            <buildArg>-H:IncludeResources=META-INF/MANIFEST.MF</buildArg>
-            <buildArg>-H:ReflectionConfigurationFiles=${project.build.directory}/picocli-reflect.json</buildArg>
-            <buildArg>-H:+ReportUnsupportedElementsAtRuntime</buildArg>
-            <buildArg>-H:+AddAllCharsets</buildArg>
-            <buildArg>${native.platformargs}</buildArg>
+            <commandLineArgs>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder
+              -H:IncludeResources=logging.properties
+              -H:IncludeResources=META-INF/MANIFEST.MF
+              -H:ReflectionConfigurationFiles=${project.build.directory}/picocli-reflect.json
+              -H:+ReportUnsupportedElementsAtRuntime
+              -H:+AddAllCharsets ${native.platformargs}</commandLineArgs>
           </buildArgs>
           <imageName>${product.name}</imageName>
           <mainClass>ca.nanometrics.miniseed.msx.Msx</mainClass>
@@ -268,6 +267,7 @@
         </os>
       </activation>
       <properties>
+        <native.platformargs>--static --libc=musl</native.platformargs>
         <platform.name>linux</platform.name>
       </properties>
     </profile>

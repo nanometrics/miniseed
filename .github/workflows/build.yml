@@ -51,12 +51,25 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Set up GraalVM Native Image toolchain
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential musl-tools musl-dev zlib1g-dev
+        if: startsWith(matrix.os, 'ubuntu')
+      - name: Set up GraalVM Native Image toolchain (Ubuntu with musl)
+        if: startsWith(matrix.os, 'ubuntu')
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '23.0.2'
           java-version: '21'
-          components: 'native-image'
+          distribution: 'graalvm-community'
+          native-image-musl: 'true'
+          native-image-job-reports: 'true'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up GraalVM Native Image toolchain (non-Ubuntu)
+        if: "!startsWith(matrix.os, 'ubuntu')"
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm-community'
+          native-image-job-reports: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: build msx
         run: mvn --no-transfer-progress --batch-mode verify

@@ -63,9 +63,11 @@ jobs:
       - name: Set up GraalVM Native Image toolchain
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '23.0.2'
           java-version: '21'
+          distribution: 'graalvm-community'
           components: 'native-image'
+          native-image-musl: 'true'
+          native-image-job-reports: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: build msx
         run: mvn --no-transfer-progress --batch-mode verify
